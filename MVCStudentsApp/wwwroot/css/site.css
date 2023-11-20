@@ -1,0 +1,91 @@
+* {
+    margin: 0;
+    padding: 0;
+    border: 0;
+}
+
+header {
+    background-color: rgb(0, 0, 0);
+    color: white;
+    height: 50px;
+    line-height: 65px;
+    margin-bottom: 20px;
+    font-size: 20px;
+    font-weight: bold;
+}
+
+.container {
+    text-align: center;
+    margin: 0 auto;
+    width: 60%;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+thead {
+    background-color: white;
+    color: black;
+}
+
+tbody tr:nth-child(odd) {
+    background-color: #b2b2b2;
+}
+
+td {
+    color: rgb(0, 0, 0);
+}
+
+.search input {
+    margin-left: 0;
+    width: 80%;
+    margin-bottom: 20px;
+    background-color: rgba(0, 120, 225, 0.278);
+    border-radius: 100px;
+}
+
+.search button {
+    background-color: white;
+    color: green;
+    border: solid green 2px;
+    width: 7%;
+    border-radius: 5px;
+}
+
+    .search button:hover {
+        background-color: green;
+        color: white;
+        border: solid green 2px;
+        width: 7%;
+        border-radius: 5px;
+    }
+
+.button-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-top: 20px;
+}
+
+.buttons {
+    color: blue;
+    background-color: white;
+    border: 1px solid blue;
+    width: 100px;
+}
+
+    .buttons:hover {
+        color: white;
+        background-color: blue;
+        border: 1px solid white;
+        width: 100px;
+    }
+
+.action-link img {
+    width: 20px; 
+    height: 20px;
+}

@@ -1,0 +1,92 @@
+﻿@model List<MVCStudentsApp.PeopleModels.Person>
+
+<h1>Index</h1>
+
+<p>
+    <a asp-controller="People" asp-action="Add">Create New</a>
+</p>
+
+<form method="get" action="@Url.Action("Index")">
+    <label for="search">Search:</label>
+    <input type="text" name="search" value="@ViewBag.Search" />
+    <button type="submit">Search</button>
+</form>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>First Name</th>
+            <th>Last Name</th>
+            <th>Date of Birth</th>
+            <th>Role</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var person in Model)
+        {
+            <tr>
+                <td>@person.Id</td>
+                <td>@person.FirstName</td>
+                <td>@person.LastName</td>
+                <td>@person.DateOfBirth.ToString("MM-dd-yyyy")</td>
+                <td>@(person.FkRole == 1 ? "Student" : "Teacher")</td>
+                <td>
+                    <a asp-action="Details" asp-route-id="@person.Id" class="action-link">
+                        <img src="~/images/Details.png" alt="Details" title="Details" />
+                    </a>
+                    <a asp-action="Edit" asp-route-id="@person.Id" class="action-link">
+                        <img src="~/images/Edit.png" alt="Edit" title="Edit" />
+                    </a>
+                    <a asp-action="Delete" asp-route-id="@person.Id" class="action-link">
+                        <img src="~/images/Delete.png" alt="Delete" title="Delete" />
+                    </a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+@{
+    int pageSize = 10;
+    int totalCount = Model.Count;
+    int currentPage = (ViewBag.Page ?? 1); 
+    int totalPages = (int)Math.Ceiling((double)totalCount / pageSize);
+    int startPage = Math.Max(currentPage - 4, 1);
+    int endPage = Math.Min(startPage + 9, totalPages);
+
+    var prevDisabled = currentPage <= 1;
+    var nextDisabled = currentPage >= totalPages;
+}
+
+<div>
+    @if (totalPages > 1)
+    {
+        <a asp-action="Index" asp-route-page="1" asp-route-search="@ViewBag.Search" class="btn btn-primary @(currentPage == 1 ? "active" : "")">1</a>
+
+        @if (startPage > 2)
+        {
+            <span>...</span>
+        }
+
+        @for (int i = startPage; i <= endPage; i++)
+        {
+            <a asp-action="Index" asp-route-page="@i" asp-route-search="@ViewBag.Search" class="btn btn-primary @(currentPage == i ? "active" : "")">@i</a>
+        }
+
+        @if (endPage < totalPages - 1)
+        {
+            <span>...</span>
+        }
+
+        <a asp-action="Index" asp-route-page="@totalPages" asp-route-search="@ViewBag.Search" class="btn btn-primary @(currentPage == totalPages ? "active" : "")">@totalPages</a>
+    }
+</div>
+
+<a asp-action="Index" asp-route-page="@(currentPage - 1)" asp-route-search="@ViewBag.Search" class="btn btn-primary @(prevDisabled ? "disabled" : "")">Previous</a>
+<a asp-action="Index" asp-route-page="@(currentPage + 1)" asp-route-search="@ViewBag.Search" class="btn btn-primary @(nextDisabled ? "disabled" : "")">Next</a>
+
+</div>
+
+

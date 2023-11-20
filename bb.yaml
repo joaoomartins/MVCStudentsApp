@@ -1,0 +1,91 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: dotnet-app
+  name: dotnet-app
+  namespace: default
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: dotnet-app
+  strategy: {}
+  template:
+    metadata:
+      labels:
+        app: dotnet-app
+    spec:
+      containers:
+        - name: dotnet-app
+          image: mvcstudentsapp
+          ports:
+            - containerPort: 80
+          env:
+            - name: ConnectionStrings__DatabaseMVC
+              value: "Server=mssql-server;Database=SchoolDatabase;Integrated Security=True;"
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: mssql-server
+  name: mssql-server
+  namespace: default
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: mssql-server
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app: mssql-server
+    spec:
+      containers:
+        - env:
+            - name: ACCEPT_EULA
+              value: "Y"
+            - name: SA_PASSWORD
+              value: "YourPasswordHere"
+            - name: MSSQL_PID
+              value: EXPRESS
+          image: mcr.microsoft.com/mssql/server:2019-latest
+          name: mssql-server
+          ports:
+            - containerPort: 1433
+          resources: {}
+---
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: dotnet-app
+  name: dotnet-app
+  namespace: default
+spec:
+  type: NodePort
+  ports:
+    - name: "http"
+      port: 8080
+      targetPort: 80
+      nodePort: 30001
+  selector:
+    app: dotnet-app
+---
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: mssql-server
+  name: mssql-server
+  namespace: default
+spec:
+  ports:
+    - name: "mssql"
+      port: 1433
+      targetPort: 1433
+  selector:
+    app: mssql-server
