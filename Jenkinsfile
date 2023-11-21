@@ -3,12 +3,18 @@ pipeline {
         dockerfile true
     }
 
-    stages('Test'){
-        echo 'Testa do testa!'
-    }
+    stages {
+        stage('Test') {
+            steps {
+                echo 'Testa do Teste!'
+            }
+        }
 
-    stage('Test2'){
-        sh 'ls -la'
+        stage('Test2') {
+            steps {
+                sh 'ls -la'
+            }
+        }
     }
 
     post {
