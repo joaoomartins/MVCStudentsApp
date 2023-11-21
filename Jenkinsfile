@@ -53,12 +53,5 @@ pipeline {
                 publishHTML(target: [allowMissing: false, alwaysLinkToLastBuild: false, keepAll: false, reportDir: 'CodeCoverage_${BUILD_NUMBER}', reportFiles: 'index.html', reportName: 'HTML Report', reportTitles: 'Code Coverage Report'])
             }
         }
-    }
-
-    post {
-        always {
-            archiveArtifacts artifacts: '**/*.msix', followSymlinks: false
-            junit "TestResults/1.0.0.${env.BUILD_NUMBER}/results.xml"
-        }
-    }  
+    } 
 }
