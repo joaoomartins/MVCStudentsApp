@@ -5,7 +5,7 @@
 # https://docs.docker.com/engine/reference/builder/
 
 # Create a stage for building the application.
-FROM mcr.microsoft.com/dotnet/sdk:6.0-windowsservercore AS build
+FROM mcr.microsoft.com/dotnet/sdk:6.0 AS build
 
 COPY . /source
 
@@ -16,7 +16,7 @@ RUN dotnet publish -c Release -o C:\app
 
 # Create a new stage for running the application that contains the minimal
 # runtime dependencies for the application.
-FROM mcr.microsoft.com/dotnet/aspnet:6.0-windowsservercore AS final
+FROM mcr.microsoft.com/dotnet/aspnet:6.0 AS final
 WORKDIR C:\app
 COPY --from=build C:\app .
 
