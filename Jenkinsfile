@@ -7,6 +7,10 @@ pipeline {
         DOCKER_COMPOSE_SERVICE = 'mvcstudentapp'
     }
 
+    triggers {
+        pollSCM('* * * * *')
+    }
+
     stages {
         stage('Checkout') {
             steps {
