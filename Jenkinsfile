@@ -53,23 +53,8 @@ pipeline {
                 powershell '''
                     $destinationFolder = "${env:WORKSPACE}/TestResults"
                     if (!(Test-Path -path $destinationFolder)) {New-Item $destinationFolder -Type Directory}
-                    $file = Get-ChildItem -Path "${env:WORKSPACE}/MVCStudentsApp/<path-to-Unit-testing-project>/<name-of-unit-test-project>/TestResults/*/*.coverage"
                     $file | Rename-Item -NewName testcoverage.coverage
-                    $renamedFile = Get-ChildItem -Path "${env:WORKSPACE}/MVCStudentsApp/<path-to-Unit-testing-project>/<name-of-unit-test-project>/TestResults/*/*.coverage"
-                    Copy-Item $renamedFile -Destination $destinationFolder
                 '''
-            }
-        }
-
-        stage('Convert coverage file to xml coverage file') {
-            steps {
-                bat "<path-to-CodeCoverage.exe>/CodeCoverage.exe analyze  /output:${WORKSPACE}/TestResults/xmlresults.coveragexml  ${WORKSPACE}/TestResults/testcoverage.coverage"
-            }
-        }
-
-        stage('Generate report') {
-            steps {
-                bat "<path-to-ReportGenerator.exe>/ReportGenerator.exe -reports:${WORKSPACE}/TestResults/xmlresults.coveragexml -targetdir:${WORKSPACE}/CodeCoverage_${env.BUILD_NUMBER}"
             }
         }
 
