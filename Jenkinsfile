@@ -1,57 +1,41 @@
 pipeline {
-    agent {
-        dockerfile true
+    agent any
+
+    environment {
+        DOCKER_COMPOSE_SERVICE = 'mvcstudentapp'
+    }
+
+    triggers {
+        // Configurar o gatilho para acionar a pipeline no push para o repositório
+        pollSCM('* * * * *')
     }
 
     stages {
-        stage('Clean workspace') {
+        stage('Checkout') {
             steps {
-                cleanWs()
+                script {
+                    // Checkout do repositório
+                    checkout scm
+                }
             }
         }
 
-        stage('Git Checkout') {
+        stage('Build and Run Docker Compose') {
             steps {
-                git branch: 'main', url: 'https://github.com/joaoomartins/MVCStudentsApp.git' 
+                script {
+                    // Construir e executar o Docker Compose
+                    sh "docker-compose up --build -d $DOCKER_COMPOSE_SERVICE"
+                }
             }
         }
+    }
 
-        stage('Restore packages') {
-            steps {
-                bat "dotnet restore ${workspace}\\MVCStudentsApp\\MVCStudentsApp\\MVCStudentsApp.csproj"
-            }
+    post {
+        success {
+            echo 'Pipeline executada com sucesso!'
         }
-
-        stage('Clean') {
-            steps {
-                bat "msbuild.exe ${workspace}\\MVCStudentsApp\\MVCStudentsApp.sln /nologo /nr:false /p:platform=\"x64\" /p:configuration=\"release\" /t:clean"
-            }
+        failure {
+            echo 'A pipeline falhou. Verifique os logs para mais detalhes.'
         }
-        
-        stage('Increase version') {
-            steps {
-                powershell '''
-                    $xmlFileName = "${workspace}\\MVCStudentsApp\\MVCStudentsApp\\Package.appxmanifest"
-                    [xml]$xmlDoc = Get-Content $xmlFileName
-                    $version = $xmlDoc.Package.Identity.Version
-                    $trimmedVersion = $version -replace '.[0-9]+$', '.'
-                    $xmlDoc.Package.Identity.Version = $trimmedVersion + ${env.BUILD_NUMBER}
-                    echo 'New version:' $xmlDoc.Package.Identity.Version
-                    $xmlDoc.Save($xmlFileName)
-                '''
-            }
-        }
-
-        stage('Build') {
-            steps {
-                bat "msbuild.exe ${workspace}\\MVCStudentsApp\\MVCStudentsApp.sln /nologo /nr:false /p:platform=\"x64\" /p:configuration=\"release\" /p:PackageCertificateKeyFile=<path-to-certificate-file>.pfx /t:clean;restore;rebuild"
-            }
-        }
-
-        stage('Publish HTML report') {
-            steps {
-                publishHTML(target: [allowMissing: false, alwaysLinkToLastBuild: false, keepAll: false, reportDir: 'CodeCoverage_${BUILD_NUMBER}', reportFiles: 'index.html', reportName: 'HTML Report', reportTitles: 'Code Coverage Report'])
-            }
-        }
-    } 
+    }
 }
