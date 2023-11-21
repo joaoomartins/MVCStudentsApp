@@ -1,5 +1,7 @@
 pipeline {
-    agent any
+    agent {
+        dockerfile true
+    }
 
     environment {
         DOCKER_COMPOSE_SERVICE = 'mvcstudentapp'
