@@ -3,30 +3,12 @@ pipeline {
         dockerfile true
     }
 
-    environment {
-        DOCKER_COMPOSE_SERVICE = 'mvcstudentapp'
+    stages('Test'){
+        echo 'Testa do testa!'
     }
 
-    triggers {
-        pollSCM('* * * * *')
-    }
-
-    stages {
-        stage('Checkout') {
-            steps {
-                script {
-                    checkout scm
-                }
-            }
-        }
-
-        stage('Build and Run Docker Compose') {
-            steps {
-                script {
-                    sh "docker-compose up --build -d $DOCKER_COMPOSE_SERVICE"
-                }
-            }
-        }
+    stage('Test2'){
+        sh 'ls -la'
     }
 
     post {
