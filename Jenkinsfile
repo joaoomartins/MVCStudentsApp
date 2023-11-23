@@ -7,6 +7,7 @@ pipeline {
                 echo 'Testa do Teste!'
             }
         }
+    }
 
     post {
         success {
