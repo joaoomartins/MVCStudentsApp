@@ -8,15 +8,6 @@ pipeline {
             }
         }
 
-        stage('Test2') {
-            steps {
-                script {
-                    powershell 'Get-ChildItem -Force'
-                }
-            }
-        }
-    }
-
     post {
         success {
             echo 'Pipeline executada com sucesso!'
