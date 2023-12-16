@@ -7,14 +7,6 @@ pipeline {
                 echo 'Testa do Teste!'
             }
         }
-
-        stage('Test2') {
-            steps {
-                script {
-                    powershell 'Get-ChildItem -Force'
-                }
-            }
-        }
     }
 
     post {
