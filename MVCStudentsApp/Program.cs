@@ -1,5 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using StudentsAppMVC.Data;
+using Microsoft.AspNetCore.Identity;
+using MVCStudentsApp.Data;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -8,6 +10,12 @@ builder.Services.AddControllersWithViews();
 
 builder.Services.AddDbContext<MVCDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DatabaseMVC")));
+
+builder.Services.AddDbContext<UserDbContext>(options =>
+    options.UseSqlServer(builder.Configuration.GetConnectionString("UserDbContextConnection")));
+
+builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
+    .AddEntityFrameworkStores<UserDbContext>();
 
 var app = builder.Build();
 
@@ -19,11 +27,14 @@ if (!app.Environment.IsDevelopment())
 app.UseStaticFiles();
 
 app.UseRouting();
+app.UseAuthentication();;
 
 app.UseAuthorization();
 
 app.MapControllerRoute(
     name: "default",
     pattern: "{controller=People}/{action=Index}/{id?}");
+
+app.MapRazorPages();
 
 app.Run();

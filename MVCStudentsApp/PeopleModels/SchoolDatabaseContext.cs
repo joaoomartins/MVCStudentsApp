@@ -28,7 +28,7 @@ public partial class SchoolDatabaseContext : DbContext
     public virtual DbSet<Role> Roles { get; set; }
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        => optionsBuilder.UseSqlServer("Server=LAPTOP-KBRPDD06\\SQLEXPRESS;Database=SchoolDatabase;Trusted_Connection=true;TrustServerCertificate=true;");
+        => optionsBuilder.UseSqlServer("Server=sql_server2022;Database=SchoolDatabase;User Id=SA;Password=A&VeryComplex123Password;TrustServerCertificate=True;MultipleActiveResultSets=True");
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {

@@ -1,17 +1,17 @@
-﻿@model List<MVCStudentsApp.PeopleModels.Person>
+﻿@using X.PagedList
+@using MVCStudentsApp.Models;
 
-<h1>Index</h1>
+@model X.PagedList.IPagedList<PersonWithRole>
 
+
+<h1>Index Students</h1>
 <p>
-    <a asp-controller="People" asp-action="Add">Create New</a>
+    <a id="NewStudent" asp-action="Add">Create New</a>
 </p>
-
 <form method="get" action="@Url.Action("Index")">
-    <label for="search">Search:</label>
-    <input type="text" name="search" value="@ViewBag.Search" />
+    <input type="text" name="search" placeholder="Search.." value="@ViewBag.Search" />
     <button type="submit">Search</button>
 </form>
-
 <table class="table">
     <thead>
         <tr>
@@ -24,22 +24,22 @@
         </tr>
     </thead>
     <tbody>
-        @foreach (var person in Model)
+        @foreach (var item in Model)
         {
             <tr>
-                <td>@person.Id</td>
-                <td>@person.FirstName</td>
-                <td>@person.LastName</td>
-                <td>@person.DateOfBirth.ToString("MM-dd-yyyy")</td>
-                <td>@(person.FkRole == 1 ? "Student" : "Teacher")</td>
+                <td>@item.person.Id</td>
+                <td>@item.person.FirstName</td>
+                <td>@item.person.LastName</td>
+                <td>@item.person.DateOfBirth.ToString("MM-dd-yyyy")</td>
+                <td>@item.role.LabelRole</td>
                 <td>
-                    <a asp-action="Details" asp-route-id="@person.Id" class="action-link">
-                        <img src="~/images/Details.png" alt="Details" title="Details" />
-                    </a>
-                    <a asp-action="Edit" asp-route-id="@person.Id" class="action-link">
+                    <a asp-action="Details" asp-route-id="@item.person.Id" id="details_button" class="action-link">
+                        <img class="details_img" src="~/images/Details.png" alt="Details" title="Details" />
+                    </a> |
+                    <a asp-action="Edit" asp-route-id="@item.person." class="action-link">
                         <img src="~/images/Edit.png" alt="Edit" title="Edit" />
-                    </a>
-                    <a asp-action="Delete" asp-route-id="@person.Id" class="action-link">
+                    </a> |
+                    <a asp-action="Delete" asp-route-id="@item.person.Id" class="action-link">
                         <img src="~/images/Delete.png" alt="Delete" title="Delete" />
                     </a>
                 </td>
@@ -48,45 +48,26 @@
     </tbody>
 </table>
 
-@{
-    int pageSize = 10;
-    int totalCount = Model.Count;
-    int currentPage = (ViewBag.Page ?? 1); 
-    int totalPages = (int)Math.Ceiling((double)totalCount / pageSize);
-    int startPage = Math.Max(currentPage - 4, 1);
-    int endPage = Math.Min(startPage + 9, totalPages);
-
-    var prevDisabled = currentPage <= 1;
-    var nextDisabled = currentPage >= totalPages;
-}
-
-<div>
-    @if (totalPages > 1)
+<div class="pagination">
+    @if (Model.HasPreviousPage)
     {
-        <a asp-action="Index" asp-route-page="1" asp-route-search="@ViewBag.Search" class="btn btn-primary @(currentPage == 1 ? "active" : "")">1</a>
+        <a href="?page=@(Model.PageNumber - 1)&search=@ViewBag.Search" class="page_button" id="previous_button">Previous</a>
+    }
 
-        @if (startPage > 2)
+    @for (int i = 1; i <= Model.PageCount; i++)
+    {
+        if (i == Model.PageNumber)
         {
-            <span>...</span>
+            <span class="current_page_button">@i</span>
         }
-
-        @for (int i = startPage; i <= endPage; i++)
+        else
         {
-            <a asp-action="Index" asp-route-page="@i" asp-route-search="@ViewBag.Search" class="btn btn-primary @(currentPage == i ? "active" : "")">@i</a>
+            <a href="?page=@i&search=@ViewBag.Search" class="page_button">@i</a>
         }
+    }
 
-        @if (endPage < totalPages - 1)
-        {
-            <span>...</span>
-        }
-
-        <a asp-action="Index" asp-route-page="@totalPages" asp-route-search="@ViewBag.Search" class="btn btn-primary @(currentPage == totalPages ? "active" : "")">@totalPages</a>
+    @if (Model.HasNextPage)
+    {
+        <a href="?page=@(Model.PageNumber + 1)&search=@ViewBag.Search" class="page_button" id="next_button">Next</a>
     }
 </div>
-
-<a asp-action="Index" asp-route-page="@(currentPage - 1)" asp-route-search="@ViewBag.Search" class="btn btn-primary @(prevDisabled ? "disabled" : "")">Previous</a>
-<a asp-action="Index" asp-route-page="@(currentPage + 1)" asp-route-search="@ViewBag.Search" class="btn btn-primary @(nextDisabled ? "disabled" : "")">Next</a>
-
-</div>
-
-

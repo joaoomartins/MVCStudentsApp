@@ -1,0 +1,39 @@
+﻿@model IEnumerable<MVCStudentsApp.PeopleModels.CurricularUnit>
+
+@{
+    ViewData["Title"] = "IndexUc";
+}
+
+<h1>IndexUc</h1>
+
+<p>
+    <a asp-action="CreateUc">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Name Units</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+                <td>@item.Id</td>
+                <td>@item.NameUnits</td>
+                <td>
+                    <a asp-action="DetailsUc" asp-route-id="@item.Id" class="action-link">
+                        <img src="~/images/Details.png" alt="Details" title="Details" />
+                    </a> |
+                    <a asp-action="EditUc" asp-route-id="@item.Id" class="action-link">
+                        <img src="~/images/Edit.png" alt="Edit" title="Edit" />
+                    </a> |
+                    <a asp-action="DeleteUc" asp-route-id="@item.Id" class="action-link">
+                        <img src="~/images/Delete.png" alt="Delete" title="Delete" />
+                    </a>
+                </td>
+        </tr>
+}
+    </tbody>
+</table>

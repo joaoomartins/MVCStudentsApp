@@ -1,0 +1,48 @@
+﻿@model IEnumerable<MVCStudentsApp.PeopleModels.Role>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Index Roles</h1>
+
+<p>
+    <a asp-action="CreateRole">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>Id</th>
+            <th>Label Role</th>
+            <th>Description Role</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @item.Id
+                </td>
+                <td>
+                    @item.LabelRole
+                </td>
+                <td>
+                    @item.DescriptionRole
+                </td>
+                <td>
+                    <a asp-action="DetailsRole" asp-route-id="@item.Id" class="action-link">
+                        <img src="~/images/Details.png" alt="Details" title="Details" />
+                    </a> |
+                    <a asp-action="EditRole" asp-route-id="@item.Id" class="action-link">
+                        <img src="~/images/Edit.png" alt="Edit" title="Edit" />
+                    </a> |
+                    <a asp-action="DeleteRole" asp-route-id="@item.Id" class="action-link">
+                        <img src="~/images/Delete.png" alt="Delete" title="Delete" />
+                    </a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

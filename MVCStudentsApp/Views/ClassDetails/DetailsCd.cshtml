@@ -1,0 +1,36 @@
+﻿@model MVCStudentsApp.PeopleModels.ClassDetail
+
+@{
+    ViewData["Title"] = "DetailsCd";
+}
+
+<h1>DetailsCd</h1>
+
+<div>
+    <h4>ClassDetail</h4>
+    <hr />
+    <dl class="row">
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.NameClass)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.NameClass)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.YearClass)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.YearClass)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Teacher)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Teacher.Id)
+        </dd>
+    </dl>
+</div>
+<div>
+    <a asp-action="EditCd" asp-route-id="@Model?.Id">Edit</a> |
+    <a asp-action="IndexCd">Back to List</a>
+</div>

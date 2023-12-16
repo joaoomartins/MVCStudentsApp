@@ -24,23 +24,24 @@
             </div>
             <div class="form-group">
                 <label asp-for="DateOfBirth" class="control-label"></label>
-                <input asp-for="DateOfBirth" class="form-control"/>
+                <input asp-for="DateOfBirth" class="form-control" />
                 <span asp-validation-for="DateOfBirth" class="text-danger"></span>
             </div>
+            
             <div class="form-group">
                 <label asp-for="FkRole" class="control-label"></label>
                 <input asp-for="FkRole" class="form-control" />
                 <span asp-validation-for="FkRole" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
+                <input id="createStudent" type="submit" value="Create" class="btn btn-primary" />
             </div>
         </form>
     </div>
 </div>
 
 <div>
-    <a asp-controller="Home" asp-action="Index">Back to List</a>
+    <a asp-controller="People" asp-action="Index">Back to List</a>
 </div>
 
 @section Scripts {

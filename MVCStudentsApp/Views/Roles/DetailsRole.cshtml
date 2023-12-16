@@ -1,0 +1,30 @@
+﻿@model MVCStudentsApp.PeopleModels.Role
+
+@{
+    ViewData["Title"] = "DetailsRole";
+}
+
+<h1>DetailsRole</h1>
+
+<div>
+    <h4>Role</h4>
+    <hr />
+    <dl class="row">
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.LabelRole)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.LabelRole)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.DescriptionRole)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.DescriptionRole)
+        </dd>
+    </dl>
+</div>
+<div>
+    <a asp-action="EditRole" asp-route-id="@Model?.Id">Edit</a> |
+    <a asp-action="IndexRole">Back to List</a>
+</div>

@@ -1,0 +1,24 @@
+﻿@model MVCStudentsApp.PeopleModels.CurricularUnit
+
+@{
+    ViewData["Title"] = "DetailsUc";
+}
+
+<h1>DetailsUc</h1>
+
+<div>
+    <h4>Role</h4>
+    <hr />
+    <dl class="row">
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.NameUnits)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.NameUnits)
+        </dd>
+    </dl>
+</div>
+<div>
+    <a asp-action="EditUc" asp-route-id="@Model?.Id">Edit</a> |
+    <a asp-action="IndexUc">Back to List</a>
+</div>

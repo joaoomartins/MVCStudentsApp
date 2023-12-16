@@ -1,0 +1,43 @@
+﻿@model IEnumerable<MVCStudentsApp.PeopleModels.ClassDetail>
+
+@{
+    ViewData["Title"] = "IndexCd";
+}
+
+<h1>IndexCd</h1>
+
+<p>
+    <a asp-action="CreateCd">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Class Name</th>
+            <th>Year Class</th>
+            <th>Teacher Id</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>@item.Id</td>
+            <td>@item.NameClass</td>
+            <td>@item.YearClass</td>
+            <td>@item.TeacherId</td>
+                <td>
+                    <a asp-action="DetailsCd" asp-route-id="@item.Id" class="action-link">
+                        <img src="~/images/Details.png" alt="Details" title="Details" />
+                    </a> |
+                    <a asp-action="EditCd" asp-route-id="@item.Id" class="action-link">
+                        <img src="~/images/Edit.png" alt="Edit" title="Edit" />
+                    </a> |
+                    <a asp-action="DeleteCd" asp-route-id="@item.Id" class="action-link">
+                        <img src="~/images/Delete.png" alt="Delete" title="Delete" />
+                    </a>
+                </td>
+        </tr>
+}
+    </tbody>
+</table>

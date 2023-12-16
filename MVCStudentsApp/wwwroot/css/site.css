@@ -1,3 +1,4 @@
+@import url('site.css');
 * {
     margin: 0;
     padding: 0;
@@ -7,17 +8,12 @@
 header {
     background-color: rgb(0, 0, 0);
     color: white;
-    height: 50px;
-    line-height: 65px;
-    margin-bottom: 20px;
-    font-size: 20px;
     font-weight: bold;
 }
 
 .container {
-    text-align: center;
+    width: 80%;
     margin: 0 auto;
-    width: 60%;
 }
 
 table {
@@ -85,7 +81,45 @@ td {
         width: 100px;
     }
 
-.action-link img {
-    width: 20px; 
-    height: 20px;
+.pagination {
+    align-content: center;
+    align-items: center;
+    margin-top: 20px;
 }
+
+.page_button {
+    padding: 8px 8px;
+    background-color: #ffffff;
+    color: #1a8bf5;
+    font-size: large;
+    text-decoration: none;
+    margin-left: -0.1em;
+    border: solid 2px rgba(200, 198, 198, 0.34);
+    cursor: pointer;
+}
+
+    .page_button:hover {
+        background-color: #d0d0d0;
+        color: #5f5f5f;
+    }
+
+.current_page_button {
+    padding: 8px 8px;
+    background-color: #0066CC;
+    color: #fff;
+    font-size: large;
+    text-decoration: none;
+    margin-left: -0.1em;
+    border: solid 2px rgba(200, 198, 198, 0.34);
+}
+
+#previous_button {
+    border-radius: 7px 0 0 7px;
+}
+
+#next_button {
+    border-radius: 0 7px 7px 0;
+}
+
+header a {
+    margin-right: 50px;

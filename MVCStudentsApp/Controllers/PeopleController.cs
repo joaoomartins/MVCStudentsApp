@@ -1,10 +1,16 @@
-﻿using StudentsAppMVC.Data;
-using MVCStudentsApp.Models;
-using MVCStudentsApp.PeopleModels;
+﻿using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using System.Runtime.CompilerServices;
-
+using X.PagedList;
+using StudentsAppMVC.Data;
+using MVCStudentsApp.Models;
+using MVCStudentsApp.PeopleModels;
+using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
+using Microsoft.AspNetCore.Mvc.Rendering;
+using System.Data;
+using System.Linq;
+using System.Data.SqlClient;
+using System.Collections.Generic;
 namespace StudentsAppMVC.Controllers
 {
     public class PeopleController : Controller
@@ -12,35 +18,43 @@ namespace StudentsAppMVC.Controllers
         private readonly SchoolDatabaseContext mvcDbContext = new();
 
         [HttpGet]
-        public async Task<IActionResult> Index(string search, int page = 1)
+        public async Task<IActionResult> Index(string search, int? page)
         {
+            int pageNumber = page ?? 1;
             int pageSize = 10;
-            IQueryable<Person> query = mvcDbContext.People.Include(p => p.FkRoleNavigation);
+
+            var query = from person in mvcDbContext.People
+                        join role in mvcDbContext.Roles on person.FkRole equals role.Id
+                        select new PersonWithRole()
+                        {
+                            person = person,
+                            role = role
+                        };
 
             if (!string.IsNullOrEmpty(search))
             {
-                query = query.Where(p => p.FirstName.Contains(search) || p.LastName.Contains(search));
+                query = query.Where(p => p.person.FirstName.Contains(search) || p.person.LastName.Contains(search));
             }
 
-            List<Person> people = await query.OrderBy(p => p.Id)
-                                            .Skip((page - 1) * pageSize)
-                                            .Take(pageSize)
-                                            .ToListAsync();
+            var peoplePagedList = await query.ToPagedListAsync(pageNumber, pageSize);
 
             ViewBag.Search = search;
-            ViewBag.Page = page;
-            return View(people);
+
+            return View(peoplePagedList);
         }
 
         [HttpGet]
         public IActionResult Add()
         {
+            ViewBag.Roles = mvcDbContext.Roles.ToList();
             return View();
         }
+
 
         [HttpPost]
         public async Task<IActionResult> Add(IFormCollection addPersonRequest)
         {
+
             Person person = new()
             {
                 FirstName = addPersonRequest["FirstName"],
@@ -146,7 +160,5 @@ namespace StudentsAppMVC.Controllers
 
             return RedirectToAction("Index");
         }
-
-
     }
 }
